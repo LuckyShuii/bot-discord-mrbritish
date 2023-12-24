@@ -2,8 +2,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const fs = require('fs');
+import { token } from './token.js';
 
-client.on('message', function(message) {
+client.on('message', function (message) {
 
     //console.log(message) - le message est envoyé trois fois, wtf ?
 
@@ -25,7 +26,7 @@ client.on('message', function(message) {
     //Ajout des réactions si Liens
 
     //Réactions automatiques pouce vert bas et pouce vert haut
-    
+
     if (message.channel.id === channelId && checkLink !== null) {
         message.react("👍")
         message.react("👎")
@@ -34,23 +35,23 @@ client.on('message', function(message) {
     // client.on('guildMemberAdd', (member) => {
     //     member.addRole(member.guild.roles.find('name', 'Membres Galiyak'));
     //  });
-    
+
 });
 
- client.on('guildMemberAdd', (member) => {
-     member.addRole(member.guild.roles.find('name', 'Visiteur'));
-  });
+client.on('guildMemberAdd', (member) => {
+    member.addRole(member.guild.roles.find('name', 'Visiteur'));
+});
 
 fs.readdir('./Commands', (error, f) => {
     if (error) { return console.error(error); }
-        let commandes = f.filter(f => f.split('.').pop() === 'js');
-        if (commandes.length <= 0) { return console.log('Aucune commande trouvée !'); }
+    let commandes = f.filter(f => f.split('.').pop() === 'js');
+    if (commandes.length <= 0) { return console.log('Aucune commande trouvée !'); }
 
-        commandes.forEach((f) => {
-            let commande = require(`./Commands/${f}`);
-            console.log(`${f} commande chargée !`);
-            client.commands.set(commande.help.name, commande);
-        });
+    commandes.forEach((f) => {
+        let commande = require(`./Commands/${f}`);
+        console.log(`${f} commande chargée !`);
+        client.commands.set(commande.help.name, commande);
+    });
 });
 
 fs.readdir('./Events/', (error, f) => {
@@ -64,5 +65,5 @@ fs.readdir('./Events/', (error, f) => {
     });
 });
 
-client.login('NjUxMTk1MDAyMDU1MDMyODMy.XkpAFg.4ItByMPYMMDXgTzQCzZh0uzzBGw');
+client.login(token);
 
